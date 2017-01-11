@@ -1,0 +1,24 @@
+<ion-view view-title="Laulumaa" hide-nav-bar="true">
+	<ion-pane>
+		<ion-header-bar class="bar-dark ezar">
+			<button class="button button-icon button-right icon ion-navicon" ng-click="openPopover($event)"></button>
+		</ion-header-bar>
+
+		<!-- abs position title above header. Allow header to be semi-transparent
+           without applying to title -->
+		<div id="title" class="title">Laulumaa demo</div>
+
+		<ion-content scroll="false">
+			<div on-drag="onDrag($event)" on-release="onRelease($event)" id="product_container" ng-style="draggedStyle">
+				<img src="./img/sofa.png" width="75%" class="product" ng-style="product" id="product">
+			</div>
+		</ion-content>
+
+		<div class="bar bar-dark ezar ezar-footer"></div>
+
+		<a id="minus" class="resize-button" ng-click="decrease()"></a>
+		<a id="snapshot" class="ezar-button" ng-click="snapshot()"></a>
+		<a id="plus" class="resize-button" ng-click="increase()"></a>
+		<!-- <a id="revcamera" class="ezar-button" ng-click="reverseCamera()"></a> -->
+	</ion-pane>
+</ion-view>

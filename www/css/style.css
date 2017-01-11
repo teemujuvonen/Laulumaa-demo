@@ -1,0 +1,100 @@
+body {
+    background-color: transparent;
+}
+
+.pane {
+    background-color: transparent;
+}
+
+.button-right {
+    position: absolute;
+    right: 5px;
+}
+#product_container {
+
+}
+
+.product {
+    /*content: url("../img/sofa.png");*/
+}
+
+#title {
+    /*color: darkred;*/
+    color: white;            
+    text-align: center;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 44px;
+}
+
+.ezar-footer {
+    height: 100px;
+    bottom: 0px;
+}
+
+.ezar-button {
+   position: absolute; 
+   z-index: 100;
+   background-color: transparent;
+   border-style: none; 
+}
+
+.resize-button {
+    position: absolute; 
+    z-index: 100;
+    background-color: transparent;
+    border-style: none; 
+}
+
+.resize-button img {
+    width: 50px;
+    height: 50px;
+}
+
+#snapshot {   
+    width: 72px;
+    height: 72px;
+    bottom: 15px;
+    left: 50%;
+    margin-left: -36px;
+    background: url("../img/camera.png") no-repeat top;
+}
+
+#snapshot:active { 
+   background: url("../img/camera_blue.png") no-repeat top;
+}
+
+#revcamera {    
+    width: 50px;
+    height: 50px;
+    bottom: 27px;
+    right: 10px;
+    background: url("../img/reverse_camera_50.png") no-repeat top;
+}
+
+#revcamera:active {    
+    background: url("../img/reverse_camera_blue_50.png") no-repeat top;
+}
+
+#plus {
+    width: 50px;
+    height: 50px;
+    bottom: 27px;
+    right: 25px;
+    background: url("../img/plus.png") no-repeat top;
+    background-size: 50px 50px;
+}
+
+#minus {
+    width: 50px;
+    height: 50px;
+    bottom: 27px;
+    left: 25px;
+    background: url("../img/minus.png") no-repeat top;
+    background-size: 50px 50px;
+}
+
+
+.hide {
+    display: none;
+}
