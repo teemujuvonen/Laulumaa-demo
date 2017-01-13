@@ -1,0 +1,39 @@
+<ion-view view-title="Laulumaa" hide-nav-bar="true">
+    <ion-pane>
+        <ion-content scroll="true" class="landing">
+            <div class="header">
+            <img src="http://niisku.lamk.fi/~juvoteem/laulumaa/images/logo.png">
+            <br>
+            Valitse tuote:
+            </div>
+            <div ng-repeat="item in categories">
+                <div class="row" ng-if="$even">
+                    <div class="col col-50">
+                        <div class="card" ng-click="selectcategory(categories[$index])">
+                            <div class="item item-image">
+                                <img ng-src="http://niisku.lamk.fi/~juvoteem/laulumaa/images/{{categories[$index].img}}" width="100%">
+                            </div>
+                            <div class="item item-divider">
+                                {{categories[$index].title}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-50">
+                        <div class="card" ng-click="selectcategory(categories[$index+1])">
+                            <div class="item item-image">
+                                <img ng-src="http://niisku.lamk.fi/~juvoteem/laulumaa/images/{{categories[$index+1].img}}" width="100%">
+                            </div>
+                            <div class="item item-divider">
+                                {{categories[$index+1].title}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <a class="button" href="#" ng-show=display_back ng-click="reset()">Takaisin</a>
+            </div>
+
+        </ion-content>
+    </ion-pane>
+</ion-view>

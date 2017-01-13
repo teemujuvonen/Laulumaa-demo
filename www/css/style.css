@@ -18,6 +18,31 @@ body {
     /*content: url("../img/sofa.png");*/
 }
 
+.landing {
+    background-color: #aaccaa;
+}
+
+.header {
+    text-transform: uppercase;
+    padding-top: 20px;
+    text-align: center;
+    color: rgba(53, 53, 53, 1);
+    font-weight: 500;
+    font-size: 130%;
+    letter-spacing: 2px;
+}
+.header img {
+    padding-bottom: 10px;
+}
+
+.card {
+    margin: 10px 10px;
+}
+
+.footer {
+    text-align: center;
+}
+
 #title {
     /*color: darkred;*/
     color: white;            

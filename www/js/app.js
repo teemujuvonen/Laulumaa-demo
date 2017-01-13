@@ -39,7 +39,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     };
   })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $compileProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -57,14 +57,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   // Each tab has its own nav history stack:
 	//signup-> login
-  .state('main', {
+    .state('main', {
       url: '/main',
-          templateUrl: 'templates/main.html',
-          controller: 'MainCtrl'
+      templateUrl: 'templates/main.html',
+      controller: 'MainCtrl'
+    })
+    .state('landing', {
+      url: '/landing',
+      templateUrl: 'templates/landing.html',
+      controller: 'LandingCtrl'
     });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/main');
+  $urlRouterProvider.otherwise('/landing');
+
+  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|content):|data:image\//);
 
 });
 
