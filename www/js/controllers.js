@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
 
-	.controller("MainCtrl", function ($scope, $timeout, $ionicPopover, Globals) {
+	.controller("MainCtrl", function ($scope, $timeout, $ionicPopover, $state, Globals) {
 		$scope.$on("$ionicView.enter", function(){
 		img = Globals.get_product();
 		document.getElementById("product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/images/" + img;
@@ -9,6 +9,11 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		Globals.set_product_size(75);
 		$scope.snapshotTimestamp = Date.now();
 		$scope.reverseCameraTimestamp = Date.now();
+
+		$scope.back = function () {
+			Globals.set_in_sub_category(false);
+			$state.go("landing");
+		}
 
 
 		$scope.snapshot = function () {
@@ -30,7 +35,8 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
 			setTimeout(function () {
 				ezar.snapshot(
-					function () {
+					function (aBase64Image) {
+						Globals.set_img(aBase64Image);
 						//perform screen capture
 						//show snapshot button
 						if (inclWebView && !inclCameraBtns) {
@@ -136,6 +142,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 	$scope.categories = [];
 	$scope.$on("$ionicView.enter", function(){
 		$scope.categories = Globals.get_categories();
+		$scope.display_back = Globals.get_in_sub_category();
 	});
 	$scope.reset = function () {
 		Globals.set_in_sub_category(false);

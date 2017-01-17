@@ -5,6 +5,7 @@ angular.module('starter.services', [])
 	data.in_sub_category = false;
 	data.product;
     data.product_size;
+	data.img;
 	data.categories = [
 			{ title: "Pihapöydät", category: 1,  img: "cat_poyta.JPG" },
 			{ title: "Pihatuolit", category: 2, img: "cat_tuoli.JPG" },
@@ -53,6 +54,12 @@ angular.module('starter.services', [])
 		},
 		get_products: function(){
 			return data.products;
+		},
+		get_img: function(){
+			return data.img;
+		},
+		set_img: function(value){
+			data.img=value;
 		}
 	}
 });
