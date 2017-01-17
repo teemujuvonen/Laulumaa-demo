@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="col col-50">
-                        <div class="card" ng-click="selectcategory(categories[$index+1])">
+                        <div class="card" ng-click="selectcategory(categories[$index+1])" ng-show="$index+1 < categories.length">
                             <div class="item item-image">
                                 <img ng-src="http://niisku.lamk.fi/~juvoteem/laulumaa/images/{{categories[$index+1].img}}" width="100%">
                             </div>
