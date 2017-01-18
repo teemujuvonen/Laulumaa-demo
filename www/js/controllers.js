@@ -3,8 +3,8 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
 	.controller("MainCtrl", function ($scope, $timeout, $ionicPopover, $state, Globals) {
 		$scope.$on("$ionicView.enter", function(){
-		img = Globals.get_product();
-		document.getElementById("product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/images/" + img;
+			img = Globals.get_product();
+			document.getElementById("product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/images/" + img;
 		});
 		Globals.set_product_size(75);
 		$scope.snapshotTimestamp = Date.now();
@@ -37,6 +37,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 				ezar.snapshot(
 					function (aBase64Image) {
 						Globals.set_img(aBase64Image);
+						$state.go("edit");
 						//perform screen capture
 						//show snapshot button
 						if (inclWebView && !inclCameraBtns) {
@@ -45,7 +46,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 						}
 					}, null,
 					{
-						encodingType: ezar.ImageEncoding.PNG,
+						encodingType: ezar.ImageEncoding.JPG,
 						includeWebView: inclWebView,
 						saveToPhotoAlbum: true
 					});
@@ -115,6 +116,24 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		};
 		$scope.closePopover = function () {
 			$scope.popover.hide();
+		};
+	})
+
+	.controller("EditCtrl", function ($scope, $timeout, $ionicPopover, $state, Globals) {
+		$scope.bg = "";
+		$scope.$on("$ionicView.enter", function(){
+			$scope.bg = Globals.get_img();
+			$scope.bg = $scope.bg.replace("data:image/1;", "data:image/jpeg;");
+			setTimeout(function(){
+				var image = document.getElementById('kuva');
+   				image.src = $scope.bg;
+				alert($scope.bg);
+			}, 2000);
+		});
+
+		$scope.back = function () {
+			Globals.set_in_sub_category(false);
+			$state.go("landing");
 		};
 	})
 
