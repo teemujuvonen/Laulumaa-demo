@@ -3,15 +3,28 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
 	.controller("MainCtrl", function ($scope, $timeout, $ionicPopover, $state, Globals) {
 		$scope.$on("$ionicView.enter", function(){
+			
+			ezar.initializeVideoOverlay(
+			function () {
+			ezar.getBackCamera().start();
+			},
+			function (err) {
+			alert('unable to init ezar: ' + err);
+			});
+
 			img = Globals.get_product();
 			document.getElementById("product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/images/" + img;
 		});
-		Globals.set_product_size(75);
+
 		$scope.snapshotTimestamp = Date.now();
 		$scope.reverseCameraTimestamp = Date.now();
 
 		$scope.back = function () {
 			Globals.set_in_sub_category(false);
+			ezar.initializeVideoOverlay(
+			function () {
+			ezar.getBackCamera().stop();
+			});
 			$state.go("landing");
 		}
 
@@ -23,26 +36,34 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
 			//get snapshot & revcamera buttons to hide/show
 			var snapshotBtn = document.getElementById("snapshot");
-			var revCameraBtn = document.getElementById("revcamera");
+			//var revCameraBtn = document.getElementById("revcamera");
+			var backBtn = document.getElementById("main-back-button");
+			var footerBlock = document.getElementById("footer-block");
 
 			var inclWebView = true;    // include/exclude webView content on top of cameraView
-			var inclCameraBtns = true; // show/hide snapshot & revcamera btns
+			var inclCameraBtns = false; // show/hide snapshot & revcamera btns
 
 			if (inclWebView && !inclCameraBtns) {
-				revCameraBtn.classList.add("hide");
+				//revCameraBtn.classList.add("hide");
 				snapshotBtn.classList.add("hide");
+				backBtn.classList.add("hide");
+				footerBlock.classList.add("hide");
 			}
 
 			setTimeout(function () {
 				ezar.snapshot(
 					function (aBase64Image) {
 						Globals.set_img(aBase64Image);
+						ezar.getBackCamera().stop();
 						$state.go("edit");
+
 						//perform screen capture
 						//show snapshot button
 						if (inclWebView && !inclCameraBtns) {
 							snapshotBtn.classList.remove("hide");
-							revCameraBtn.classList.remove("hide");
+							//revCameraBtn.classList.remove("hide");
+							backBtn.classList.remove("hide");
+							footerBlock.classList.remove("hide");
 						}
 					}, null,
 					{
@@ -89,22 +110,6 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 			};
 		}
 
-		$scope.increase = function () {
-			width = Globals.get_product_size() + 5;
-			$scope.product = {
-				"width": + width + "%"
-			};
-			Globals.set_product_size(width);
-		}
-
-		$scope.decrease = function () {
-			width = Globals.get_product_size() - 5;
-			$scope.product = {
-				"width": + width + "%"
-			};
-			Globals.set_product_size(width);
-		}
-
 
 		$ionicPopover.fromTemplateUrl('templates/popover.html', {
 			scope: $scope,
@@ -124,11 +129,6 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		$scope.$on("$ionicView.enter", function(){
 			$scope.bg = Globals.get_img();
 			$scope.bg = $scope.bg.replace("data:image/1;", "data:image/jpeg;");
-			setTimeout(function(){
-				var image = document.getElementById('kuva');
-   				image.src = $scope.bg;
-				alert($scope.bg);
-			}, 2000);
 		});
 
 		$scope.back = function () {

@@ -20,7 +20,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-
+    
+    /*
     if (window.ezar) {
       ezar.initializeVideoOverlay(
         function () {
@@ -29,7 +30,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         function (err) {
           alert('unable to init ezar: ' + err);
         });
-    }
+        
+    }*/
   });
 })
 

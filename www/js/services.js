@@ -4,7 +4,6 @@ angular.module('starter.services', [])
 	var data ={};
 	data.in_sub_category = false;
 	data.product;
-    data.product_size;
 	data.img;
 	data.categories = [
 			{ title: "Pihapöydät", category: 1,  img: "cat_poyta.JPG" },
@@ -32,14 +31,6 @@ angular.module('starter.services', [])
 		},
 		get_product: function(){
 			return data.product;
-			
-		},
-        set_product_size: function(value){
-			data.product_size=value;
-			
-		},
-		get_product_size: function(){
-			return data.product_size;
 			
 		},
 		set_in_sub_category: function(value){

@@ -59,6 +59,12 @@ body {
     line-height: 44px;
 }
 
+.edit-footer {
+    height: 100px;
+    bottom: 0px;
+    opacity: 0.45;
+}
+
 .ezar-footer {
     height: 100px;
     bottom: 0px;
