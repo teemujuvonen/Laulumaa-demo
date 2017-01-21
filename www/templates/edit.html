@@ -1,9 +1,14 @@
 <ion-view view-title="Laulumaa" hide-nav-bar="true">
 	<ion-pane>
-		<ion-content scroll="true" class="edit">
-            <img data-ng-src="{{bg}}" width="100%"/>
+		<ion-content scroll="false" class="edit">
+			<div ion-pinch id="product_container" ng-style="draggedStyle">
+				<img src="http://niisku.lamk.fi/~juvoteem/laulumaa/images/default.png" width="75%" class="product" ng-style="product" id="edit-product">
+			</div>
+            	<img id="bg" data-ng-src="{{bg}}" width="100%" height="100%"/>
 		</ion-content>
         <div class="bar bar-dark edit-footer"></div>
         <a id="main-back-button" class="ezar-button ion-android-arrow-back" ng-click="back()"></a>
+	  <a id="edit-add-button" class="ezar-button" ng-click="back()"></a>
+	  <a id="edit-confirm-button" class="ezar-button ion-android-done" ng-click=""></a>
 	</ion-pane>
 </ion-view>

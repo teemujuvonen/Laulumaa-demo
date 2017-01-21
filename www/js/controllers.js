@@ -55,6 +55,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 					function (aBase64Image) {
 						Globals.set_img(aBase64Image);
 						ezar.getBackCamera().stop();
+						Globals.set_product(null);
 						$state.go("edit");
 
 						//perform screen capture
@@ -127,8 +128,14 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 	.controller("EditCtrl", function ($scope, $timeout, $ionicPopover, $state, Globals) {
 		$scope.bg = "";
 		$scope.$on("$ionicView.enter", function(){
-			$scope.bg = Globals.get_img();
-			$scope.bg = $scope.bg.replace("data:image/1;", "data:image/jpeg;");
+			if (!$scope.bg){
+				$scope.bg = Globals.get_img();
+				$scope.bg = $scope.bg.replace("data:image/1;", "data:image/jpeg;");
+			}
+			if (Globals.get_product()) {
+				img = Globals.get_product();
+				document.getElementById("edit-product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/images/" + img;
+			}
 		});
 
 		$scope.back = function () {
@@ -172,7 +179,11 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		$scope.products = Globals.get_products();
 
 		$scope.selectcategory = function (index) {
-			if (Globals.get_in_sub_category()) {
+			if (Globals.get_in_sub_category() && Globals.get_img()) {
+				Globals.set_product(index.img);
+				$state.go("edit");
+			}
+			else if (Globals.get_in_sub_category()) {
 				Globals.set_product(index.img);
 				$state.go("main");
 			}
