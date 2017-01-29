@@ -10,6 +10,29 @@ body {
     position: absolute;
     right: 5px;
 }
+
+.item.item-image img {
+    height: 150px;
+}
+
+@media screen and (min-width: 321px) {
+    .item.item-image img {
+        height: 171px;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    .item.item-image img {
+        height: 320px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .item.item-image img {
+        height: 470px;
+    }
+}
+
 #product_container {
     top: 0px;
     left: 0px;

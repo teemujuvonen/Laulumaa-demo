@@ -13,7 +13,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 			});
 
 			img = Globals.get_product();
-			document.getElementById("product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/images/" + img;
+			document.getElementById("product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/api/uploads/" + img;
 		});
 
 		$scope.snapshotTimestamp = Date.now();
@@ -134,7 +134,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 			}
 			if (Globals.get_product()) {
 				img = Globals.get_product();
-				document.getElementById("edit-product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/images/" + img;
+				document.getElementById("edit-product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/api/uploads/" + img;
 			}
 		});
 
@@ -163,20 +163,32 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		}
 	})
 
-	.controller('LandingCtrl', function ($scope, $state, Globals) {
+	.controller('LandingCtrl', function ($scope, $state, $http, Globals) {
 	$scope.display_back = false;
 	$scope.categories = [];
 	$scope.$on("$ionicView.enter", function(){
-		$scope.categories = Globals.get_categories();
+		var link = "http://niisku.lamk.fi/~juvoteem/laulumaa/api/get_categories.php";
+
+		$http.post(link, {}).then(function(res){
+		$scope.response = res.data;
+		$scope.categories = $scope.response;
+		});
+		//$scope.categories = Globals.get_categories();
 		$scope.display_back = Globals.get_in_sub_category();
 	});
 	$scope.reset = function () {
 		Globals.set_in_sub_category(false);
 		$scope.display_back = false;
-		$scope.categories = Globals.get_categories();
+		//$scope.categories = Globals.get_categories();
+		var link = "http://niisku.lamk.fi/~juvoteem/laulumaa/api/get_categories.php";
+
+		$http.post(link, {}).then(function(res){
+		$scope.response = res.data;
+		$scope.categories = $scope.response;
+		});
 	}
 		$scope.products = [];
-		$scope.products = Globals.get_products();
+		//$scope.products = Globals.get_products();
 
 		$scope.selectcategory = function (index) {
 			if (Globals.get_in_sub_category() && Globals.get_img()) {
@@ -190,12 +202,20 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 			else {
 				Globals.set_in_sub_category(true);
 				$scope.display_back = true;
+				var link = "http://niisku.lamk.fi/~juvoteem/laulumaa/api/get_products.php";
+
+				$http.post(link, {category: index.title}).then(function(res){
+				$scope.response = res.data;
+				$scope.categories = $scope.response;
+				});
+				/*
 				$scope.categories = [];
 				for (var i in $scope.products) {
 					if ($scope.products[i].category == index.category) {
 						$scope.categories.push($scope.products[i]);
 					}
 				}
+				*/
 			}
 		}
 	})

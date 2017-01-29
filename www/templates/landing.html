@@ -11,20 +11,20 @@
                     <div class="col col-50">
                         <div class="card" ng-click="selectcategory(categories[$index])">
                             <div class="item item-image">
-                                <img ng-src="http://niisku.lamk.fi/~juvoteem/laulumaa/images/{{categories[$index].img}}" width="100%">
+                                <img ng-src="http://niisku.lamk.fi/~juvoteem/laulumaa/api/uploads/{{categories[$index].img}}" width="100%">
                             </div>
                             <div class="item item-divider">
-                                {{categories[$index].title}}
+                                {{categories[$index].title}}{{categories[$index].name}}
                             </div>
                         </div>
                     </div>
                     <div class="col col-50">
                         <div class="card" ng-click="selectcategory(categories[$index+1])" ng-show="$index+1 < categories.length">
                             <div class="item item-image">
-                                <img ng-src="http://niisku.lamk.fi/~juvoteem/laulumaa/images/{{categories[$index+1].img}}" width="100%">
+                                <img ng-src="http://niisku.lamk.fi/~juvoteem/laulumaa/api/uploads/{{categories[$index+1].img}}" width="100%">
                             </div>
                             <div class="item item-divider">
-                                {{categories[$index+1].title}}
+                                {{categories[$index+1].title}}{{categories[$index+1].name}}
                             </div>
                         </div>
                     </div>
