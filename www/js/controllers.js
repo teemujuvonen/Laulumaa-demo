@@ -125,7 +125,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		};
 	})
 
-	.controller("EditCtrl", function ($scope, $timeout, $ionicPopover, $state, Globals) {
+	.controller("EditCtrl", function ($scope, $timeout, $ionicPopup, $ionicPopover, $state, Globals) {
 		$scope.bg = "";
 		$scope.$on("$ionicView.enter", function(){
 			if (!$scope.bg){
@@ -142,6 +142,21 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 			Globals.set_in_sub_category(false);
 			$state.go("landing");
 		};
+
+		$scope.done = function () {
+			navigator.screenshot.save(function (error, res) {
+				if (error) {
+					console.error(error);
+				} else {
+					$scope.bg = res.filePath;
+					$ionicPopup.alert({
+						title: 'Kuva tallennettu laitteeseen',
+						okType: 'button-balanced'
+					});
+
+				}
+			});
+		}
 	})
 
 	.controller('PopoverCtrl', function ($scope, $state, $ionicPlatform, Globals) {
