@@ -126,6 +126,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 	})
 
 	.controller("EditCtrl", function ($scope, $timeout, $ionicPopup, $ionicPopover, $state, Globals) {
+		$scope.screenshotTimestamp = Date.now();
 		$scope.bg = "";
 		$scope.$on("$ionicView.enter", function(){
 			if (!$scope.bg){
@@ -144,18 +145,37 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		};
 
 		$scope.done = function () {
-			navigator.screenshot.save(function (error, res) {
-				if (error) {
-					console.error(error);
-				} else {
-					$scope.bg = res.filePath;
-					$ionicPopup.alert({
-						title: 'Kuva tallennettu laitteeseen',
-						okType: 'button-balanced'
-					});
+			if (Date.now() - $scope.screenshotTimestamp < 1500) return;
+			$scope.screenshotTimestamp = Date.now();
 
-				}
-			});
+			var eFooter = document.getElementById("edit-footer-block");
+			var eBackButton = document.getElementById("edit-back-button");
+			var eAddButton = document.getElementById("edit-add-button");
+			var eDoneButton = document.getElementById("edit-confirm-button");
+
+			eFooter.classList.add("hide");
+			eBackButton.classList.add("hide");
+			eAddButton.classList.add("hide");
+			eDoneButton.classList.add("hide");
+
+			setTimeout(function () {
+				navigator.screenshot.save(function (error, res) {
+					if (error) {
+						console.error(error);
+					} else {
+						$scope.bg = res.filePath;
+						$ionicPopup.alert({
+							title: 'Kuva tallennettu laitteeseen',
+							okType: 'button-balanced'
+						});
+					}
+				});
+				eFooter.classList.remove("hide");
+				eBackButton.classList.remove("hide");
+				eAddButton.classList.remove("hide");
+				eDoneButton.classList.remove("hide");
+			}, 200);
+			
 		}
 	})
 
