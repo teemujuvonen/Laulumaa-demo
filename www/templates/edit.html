@@ -4,11 +4,23 @@
 			<div ion-pinch id="product_container" ng-style="draggedStyle">
 				<img src="http://niisku.lamk.fi/~juvoteem/laulumaa/images/default.png" width="75%" class="product" ng-style="product" id="edit-product">
 			</div>
-            	<img id="bg" data-ng-src="{{bg}}" width="100%" height="100%"/>
+			<img id="bg" data-ng-src="{{bg}}" width="100%" height="100%" />
 		</ion-content>
-        <div id="edit-footer-block" class="bar bar-dark edit-footer"></div>
-        <a id="edit-back-button" class="ezar-button ion-android-arrow-back" ng-click="back()"></a>
-	  <a id="edit-add-button" class="ezar-button" ng-click="back()"></a>
-	  <a id="edit-confirm-button" class="ezar-button ion-android-done" ng-click="done()"></a>
+		<div id="edit-footer-block" class="bar bar-dark edit-footer"></div>
+		<a id="edit-back-button" class="ezar-button" ng-click="back()">
+			<button class="button button-edit button-icon">
+				<i class="icon ion-trash-b"></i> HYLKÄÄ
+			</button>
+		</a>
+		<a id="edit-add-button" class="ezar-button" ng-click="add()">
+			<button class="button button-edit button-icon">
+				<i class="icon ion-images"></i> LISÄÄ TUOTE
+			</button>
+		</a>
+		<a id="edit-confirm-button" class="ezar-button" ng-click="done()">
+			<button class="button button-edit button-icon">
+				<i class="icon ion-checkmark"></i> TALLENNA
+			</button>
+		</a>
 	</ion-pane>
 </ion-view>

@@ -70,7 +70,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 					{
 						encodingType: ezar.ImageEncoding.JPG,
 						includeWebView: inclWebView,
-						saveToPhotoAlbum: true
+						saveToPhotoAlbum: false
 					});
 			}, 200);
 		};
@@ -141,8 +141,43 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
 		$scope.back = function () {
 			Globals.set_in_sub_category(false);
+			Globals.set_img(null);
+			$scope.bg = "";
 			$state.go("landing");
 		};
+
+		$scope.add = function () {
+			if (Date.now() - $scope.screenshotTimestamp < 1500) return;
+			$scope.screenshotTimestamp = Date.now();
+
+			var eFooter = document.getElementById("edit-footer-block");
+			var eBackButton = document.getElementById("edit-back-button");
+			var eAddButton = document.getElementById("edit-add-button");
+			var eDoneButton = document.getElementById("edit-confirm-button");
+
+			eFooter.classList.add("hide");
+			eBackButton.classList.add("hide");
+			eAddButton.classList.add("hide");
+			eDoneButton.classList.add("hide");
+
+			setTimeout(function () {
+				navigator.screenshot.URI(function (error, res) {
+					if (error) {
+						console.error(error);
+					} else {
+						$scope.bg = res.URI;
+					}
+				});
+
+				eFooter.classList.remove("hide");
+				eBackButton.classList.remove("hide");
+				eAddButton.classList.remove("hide");
+				eDoneButton.classList.remove("hide");
+
+				Globals.set_in_sub_category(false);
+				$state.go("landing");
+			}, 200);
+		}
 
 		$scope.done = function () {
 			if (Date.now() - $scope.screenshotTimestamp < 1500) return;

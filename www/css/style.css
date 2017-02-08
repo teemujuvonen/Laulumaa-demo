@@ -87,6 +87,20 @@ body {
     font-weight: 500;
     line-height: 44px;
 }
+.button-edit {
+    line-height: 20px;
+}
+.button-icon {
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+
+.button-icon .icon:before {
+}
+.button-icon .icon {
+  display: block;
+}
 
 .edit-footer {
     height: 100px;
@@ -126,24 +140,25 @@ body {
 }
 
 #edit-back-button {
+    text-align: center;
     font-size: -webkit-xxx-large;
-    bottom: 25px;
+    bottom: 20px;
     margin-left: 20px;
     color: white;
 }
 
 #edit-add-button {
-    width: 72px;
-    height: 72px;
-    bottom: 15px;
+    text-align: center;
+    font-size: -webkit-xxx-large;
+    bottom: 20px;
     left: 50%;
-    margin-left: -36px;
-    background: url("../img/couch.png") no-repeat top;
+    margin-left: -42.5px;
 }
 
 #edit-confirm-button {
+    text-align: center;
     font-size: -webkit-xxx-large;
-    bottom: 25px;
+    bottom: 20px;
     right: 20px;
     margin-left: 20px;
     color: white;
