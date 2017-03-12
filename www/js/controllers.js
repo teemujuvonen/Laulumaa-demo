@@ -13,7 +13,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 			});
 
 			img = Globals.get_product();
-			document.getElementById("product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/api/uploads/" + img;
+			document.getElementById("product").src = "http://niisku.lamk.fi/~laulumaa/api/uploads/" + img;
 		});
 
 		$scope.snapshotTimestamp = Date.now();
@@ -55,7 +55,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 					function (aBase64Image) {
 						Globals.set_img(aBase64Image);
 						ezar.getBackCamera().stop();
-						Globals.set_product(null);
+						Globals.set_product("");
 						$state.go("edit");
 
 						//perform screen capture
@@ -135,7 +135,16 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 			}
 			if (Globals.get_product()) {
 				img = Globals.get_product();
-				document.getElementById("edit-product").src = "http://niisku.lamk.fi/~juvoteem/laulumaa/api/uploads/" + img;
+				document.getElementById("edit-product").src = "http://niisku.lamk.fi/~laulumaa/api/uploads/" + img;
+			}
+			var rotation = document.getElementById('bg');
+			rotation.classList.remove("bg_vertical");
+			rotation.classList.remove("bg_horizontal");
+			if (rotation.naturalHeight > rotation.naturalWidth) {
+				rotation.classList.add("bg_vertical");
+			}
+			else {
+				rotation.classList.add("bg_horizontal");
 			}
 		});
 
@@ -200,7 +209,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 					} else {
 						$scope.bg = res.filePath;
 						$ionicPopup.alert({
-							title: 'Kuva tallennettu laitteeseen',
+							title: '<b>Kuva tallennettu laitteeseen</b>',
 							okType: 'button-balanced'
 						});
 					}
@@ -233,11 +242,12 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		}
 	})
 
-	.controller('LandingCtrl', function ($scope, $state, $http, Globals) {
+	.controller('LandingCtrl', function ($scope, $state, $http, $ionicPopup, Globals) {
 	$scope.display_back = false;
+	$scope.display_info = false;
 	$scope.categories = [];
 	$scope.$on("$ionicView.enter", function(){
-		var link = "http://niisku.lamk.fi/~juvoteem/laulumaa/api/get_categories.php";
+		var link = "http://niisku.lamk.fi/~laulumaa/api/get_categories.php";
 
 		$http.post(link, {}).then(function(res){
 		$scope.response = res.data;
@@ -245,12 +255,14 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		});
 		//$scope.categories = Globals.get_categories();
 		$scope.display_back = Globals.get_in_sub_category();
+		$scope.display_info = Globals.get_in_sub_category();
 	});
 	$scope.reset = function () {
 		Globals.set_in_sub_category(false);
 		$scope.display_back = false;
+		$scope.display_info = false;
 		//$scope.categories = Globals.get_categories();
-		var link = "http://niisku.lamk.fi/~juvoteem/laulumaa/api/get_categories.php";
+		var link = "http://niisku.lamk.fi/~laulumaa/api/get_categories.php";
 
 		$http.post(link, {}).then(function(res){
 		$scope.response = res.data;
@@ -259,6 +271,22 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 	}
 		$scope.products = [];
 		//$scope.products = Globals.get_products();
+
+		$scope.additional_info = function (index) {
+			$ionicPopup.alert({
+				title: '<b>' + index.nimike +'</b>',
+				template: '<b>Kuvaus:</b> ' + index.kuvaus + '<br><br><b>Väri:</b> ' + index.nimike2 + '<br><br><b>Mittainfo:</b> ' + index.mittainfo + '<br><br><b>Tekniset tiedot:</b> ' + index.tekniset + '<br><br><b>Hinta:</b> ' + index.ovh + '€',
+				okType: 'button-balanced'
+			});
+		}
+
+		$scope.about_application = function() {
+			$ionicPopup.alert({
+				title: '<b>Tietoa sovelluksesta</b>',
+				template: 'Sovelluksessa koeponnistetaan augmented reality -teknologiaa, joka mahdollistaa tuotekuvien sijoittamisen mihin tahansa ympäristöön.',
+				okType: 'button-balanced'
+			});
+		}
 
 		$scope.selectcategory = function (index) {
 			if (Globals.get_in_sub_category() && Globals.get_img()) {
@@ -272,7 +300,8 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 			else {
 				Globals.set_in_sub_category(true);
 				$scope.display_back = true;
-				var link = "http://niisku.lamk.fi/~juvoteem/laulumaa/api/get_products.php";
+				$scope.display_info = true;
+				var link = "http://niisku.lamk.fi/~laulumaa/api/get_products.php";
 
 				$http.post(link, {category: index.title}).then(function(res){
 				$scope.response = res.data;

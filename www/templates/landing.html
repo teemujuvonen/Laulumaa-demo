@@ -2,29 +2,41 @@
     <ion-pane>
         <ion-content scroll="true" class="landing">
             <div class="header">
-            <img src="http://niisku.lamk.fi/~juvoteem/laulumaa/images/logo.png">
+            <img src="http://niisku.lamk.fi/~laulumaa/images/logo.png">
             <br>
             Valitse tuote:
             </div>
             <div ng-repeat="item in categories">
                 <div class="row" ng-if="$even">
                     <div class="col col-50">
-                        <div class="card" ng-click="selectcategory(categories[$index])">
-                            <div class="item item-image">
-                                <img ng-src="http://niisku.lamk.fi/~juvoteem/laulumaa/api/uploads/{{categories[$index].img}}" width="100%">
+                        <div class="card">
+                            <div class="item item-divider centered" ng-click="selectcategory(categories[$index])">
+                                {{categories[$index].title}}{{categories[$index].nimike}}
                             </div>
-                            <div class="item item-divider">
-                                {{categories[$index].title}}{{categories[$index].name}}
+                            <div class="item item-image" ng-click="selectcategory(categories[$index])">
+                                <img ng-src="http://niisku.lamk.fi/~laulumaa/api/uploads/{{categories[$index].img}}" width="100%">
+                            </div>
+                            <div class="item item-divider" ng-show="display_info" ng-click="additional_info(categories[$index])">
+                                <div class="item-text">
+                                {{categories[$index].ovh + "€"}}
+                                </div>
+                                <icon class="ion-information-circled info-button"></icon>
                             </div>
                         </div>
                     </div>
                     <div class="col col-50">
-                        <div class="card" ng-click="selectcategory(categories[$index+1])" ng-show="$index+1 < categories.length">
-                            <div class="item item-image">
-                                <img ng-src="http://niisku.lamk.fi/~juvoteem/laulumaa/api/uploads/{{categories[$index+1].img}}" width="100%">
+                        <div class="card" ng-show="$index+1 < categories.length">
+                            <div class="item item-divider centered" ng-click="selectcategory(categories[$index+1])">
+                                {{categories[$index+1].title}}{{categories[$index+1].nimike}}
                             </div>
-                            <div class="item item-divider">
-                                {{categories[$index+1].title}}{{categories[$index+1].name}}
+                            <div class="item item-image" ng-click="selectcategory(categories[$index+1])">
+                                <img ng-src="http://niisku.lamk.fi/~laulumaa/api/uploads/{{categories[$index+1].img}}" width="100%">
+                            </div>
+                            <div class="item item-divider" ng-show="display_info" ng-click="additional_info(categories[$index+1])">
+                                <div class="item-text">
+                                {{categories[$index+1].ovh + "€"}}
+                                </div>
+                                <icon class="ion-information-circled info-button"></icon>
                             </div>
                         </div>
                     </div>
@@ -32,6 +44,10 @@
             </div>
             <div class="footer">
                 <a class="button" href="#" ng-show=display_back ng-click="reset()">Takaisin</a>
+                <div class="main_footer" ng-show=!display_back>
+                <a class="button about-button" href="#" ng-show=!display_back ng-click="about_application()">Tietoa sovelluksesta</a><br>
+                © 2017 Laulumaa
+                </div>
             </div>
 
         </ion-content>

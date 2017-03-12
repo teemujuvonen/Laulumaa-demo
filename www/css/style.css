@@ -46,6 +46,16 @@ body {
     z-index: -1;
 }
 
+.bg_horizontal {
+    width: 100%;
+    height: auto;
+}
+
+.bg_vertical {
+    width: auto;
+    height: 100%;
+}
+
 .product {
 
 }
@@ -77,6 +87,32 @@ body {
 
 .footer {
     text-align: center;
+}
+
+.centered {
+    text-align: center;
+}
+
+.info-button {
+    float: right;
+}
+
+.item-text {
+    display: inline;
+}
+
+.popup {
+    width: 275px !important;
+}
+
+.main_footer {
+    font-style: italic;
+    margin-top: 25px;
+}
+
+.about-button {
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.75);
 }
 
 #title {
@@ -152,7 +188,7 @@ body {
     font-size: -webkit-xxx-large;
     bottom: 20px;
     left: 50%;
-    margin-left: -42.5px;
+    margin-left: -47.25px;
 }
 
 #edit-confirm-button {
