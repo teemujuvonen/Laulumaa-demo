@@ -9,6 +9,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform, $state) {
   $ionicPlatform.ready(function() {
+    window.localStorage.removeItem("base64image");
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -33,6 +34,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         
     }*/
   });
+  $ionicPlatform.registerBackButtonAction(function() {
+    $state.go("landing");
+  }, 100);
 })
 
 .filter('trustUrl', function ($sce) {

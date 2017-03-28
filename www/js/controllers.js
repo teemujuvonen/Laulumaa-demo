@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
 
-	.controller("MainCtrl", function ($scope, $timeout, $ionicPopover, $state, Globals) {
+	.controller("MainCtrl", function ($scope, $timeout, $ionicPlatform, $ionicPopover, $ionicHistory, $state, Globals) {
 		$scope.$on("$ionicView.enter", function(){
 			
 			ezar.initializeVideoOverlay(
@@ -22,10 +22,16 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		$scope.back = function () {
 			Globals.set_in_sub_category(false);
 			ezar.initializeVideoOverlay(
-			function () {
-			ezar.getBackCamera().stop();
-			});
-			$state.go("landing");
+				function () {
+					ezar.getBackCamera().stop();
+				});
+
+			$ionicHistory.clearCache().then(function () {
+				$state.go("landing").then(function () {
+					$ionicHistory.clearCache()
+				})
+			})
+			//$state.go("landing");
 		}
 
 
@@ -53,10 +59,18 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 			setTimeout(function () {
 				ezar.snapshot(
 					function (aBase64Image) {
-						Globals.set_img(aBase64Image);
+						//Globals.set_img(aBase64Image);
+						window.localStorage.setItem("base64image", aBase64Image);
+
 						ezar.getBackCamera().stop();
-						Globals.set_product("");
-						$state.go("edit");
+						Globals.set_product(null);
+
+						$ionicHistory.clearCache().then(function () {
+							$state.go("edit").then(function () {
+								$ionicHistory.clearCache()
+							})
+						})
+						//$state.go("edit");
 
 						//perform screen capture
 						//show snapshot button
@@ -125,19 +139,30 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		};
 	})
 
-	.controller("EditCtrl", function ($scope, $timeout, $ionicPopup, $ionicPopover, $state, Globals) {
+	.controller("EditCtrl", function ($scope, $timeout, $ionicPlatform, $ionicPopup, $ionicPopover, $state, Globals) {
 		$scope.screenshotTimestamp = Date.now();
 		$scope.bg = "";
 		$scope.$on("$ionicView.enter", function(){
+			var img = "";
+
 			if (!$scope.bg){
-				$scope.bg = Globals.get_img();
+				//$scope.bg = Globals.get_img();
+				$scope.bg = window.localStorage.getItem("base64image");
 				$scope.bg = $scope.bg.replace("data:image/1;", "data:image/jpeg;");
 			}
 			if (Globals.get_product()) {
 				img = Globals.get_product();
 				document.getElementById("edit-product").src = "http://niisku.lamk.fi/~laulumaa/api/uploads/" + img;
 			}
+			else {
+				img = "";
+				document.getElementById("edit-product").src = "http://niisku.lamk.fi/~laulumaa/images/default.png";
+			}
+			document.getElementById("edit-product").style.alignSelf = "baseline";
+			document.getElementById("edit-product").style.width = "75%";
 			var rotation = document.getElementById('bg');
+			rotation.classList.add("bg_vertical");
+			/*
 			rotation.classList.remove("bg_vertical");
 			rotation.classList.remove("bg_horizontal");
 			if (rotation.naturalHeight > rotation.naturalWidth) {
@@ -146,12 +171,17 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 			else {
 				rotation.classList.add("bg_horizontal");
 			}
+			alert(rotation.classList.toString() + " width:" + rotation.naturalWidth + " height:" +rotation.naturalHeight);
+			*/
 		});
 
 		$scope.back = function () {
 			Globals.set_in_sub_category(false);
 			Globals.set_img(null);
+			Globals.set_product(null);
+			window.localStorage.removeItem("base64image");
 			$scope.bg = "";
+			img = "";
 			$state.go("landing");
 		};
 
@@ -208,9 +238,13 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 						console.error(error);
 					} else {
 						$scope.bg = res.filePath;
-						$ionicPopup.alert({
+						var donePopop = $ionicPopup.alert({
 							title: '<b>Kuva tallennettu laitteeseen</b>',
+							template: '<center>Sovellus palaa takaisin alkuun.<br><img src="' + $scope.bg +' "width="100%" /></center>',
 							okType: 'button-balanced'
+						});
+						donePopop.then(function (res) {
+							$scope.back();
 						});
 					}
 				});
@@ -242,11 +276,12 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		}
 	})
 
-	.controller('LandingCtrl', function ($scope, $state, $http, $ionicPopup, Globals) {
+	.controller('LandingCtrl', function ($scope, $state, $http, $ionicPlatform, $ionicPopup, Globals) {
 	$scope.display_back = false;
 	$scope.display_info = false;
 	$scope.categories = [];
 	$scope.$on("$ionicView.enter", function(){
+		$scope.categories = [];
 		var link = "http://niisku.lamk.fi/~laulumaa/api/get_categories.php";
 
 		$http.post(link, {}).then(function(res){
@@ -257,6 +292,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		$scope.display_back = Globals.get_in_sub_category();
 		$scope.display_info = Globals.get_in_sub_category();
 	});
+
 	$scope.reset = function () {
 		Globals.set_in_sub_category(false);
 		$scope.display_back = false;
@@ -283,13 +319,13 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 		$scope.about_application = function() {
 			$ionicPopup.alert({
 				title: '<b>Tietoa sovelluksesta</b>',
-				template: 'Sovelluksessa koeponnistetaan augmented reality -teknologiaa, joka mahdollistaa tuotekuvien sijoittamisen mihin tahansa ympäristöön.',
+				template: 'Sovelluksessa koeponnistetaan augmented reality -teknologiaa, joka mahdollistaa tuotekuvien sijoittamisen mihin tahansa ympäristöön.<br><br>Sovellusta on kehitetty yhteistyössä Laulumaa Huonekalut Oy:n ja Lahden ammattikorkeakoulun kanssa.<br><br><center><img src="http://niisku.lamk.fi/~laulumaa/images/lamk_logo2.jpg" width="90%" /></center>',
 				okType: 'button-balanced'
 			});
 		}
 
 		$scope.selectcategory = function (index) {
-			if (Globals.get_in_sub_category() && Globals.get_img()) {
+			if (Globals.get_in_sub_category() && window.localStorage.getItem("base64image")) {
 				Globals.set_product(index.img);
 				$state.go("edit");
 			}
@@ -305,6 +341,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
 				$http.post(link, {category: index.title}).then(function(res){
 				$scope.response = res.data;
+				$scope.categories = [];
 				$scope.categories = $scope.response;
 				});
 				/*
@@ -337,7 +374,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 						lastScale,
 						rotation = 0,
 						last_rotation, dragReady = 0;
-					ionic.onGesture('touch drag transform dragend', function (e) {
+					ionic.onGesture('touch drag transform dragend transformend', function (e) {
 						e.gesture.srcEvent.preventDefault();
 						e.gesture.preventDefault();
 						switch (e.type) {
@@ -356,7 +393,10 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 							case 'dragend':
 								lastPosX = posX;
 								lastPosY = posY;
-								lastScale = scale;
+								//lastScale = scale;
+								break;
+							case 'transformend':
+
 								break;
 						}
 						var transform =
